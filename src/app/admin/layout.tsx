@@ -1,15 +1,19 @@
-import { ReactNode } from "react"
-import Sidebar from "../components/Sidebar"
 
-const AdminLayout = ({children}:{children : ReactNode}) => {
-  return (
-    <div>
-      <Sidebar/>
-      {children}
-    </div>
-  )
+import React from 'react'
+import Sidebar from '../components/Sidebar';
+
+interface AdminLayoutProps{
+  chidren: React.ReactNode;
 }
+const AdminLayout = ({children}: AdminLayoutProps) => {
+  return(
+   <div className='flex'>
+     <Sidebar/>
+     <main>{children}</main>
+   </div>
+   );
+};
 
-export default AdminLayout
+export default AdminLayout;
 
 
