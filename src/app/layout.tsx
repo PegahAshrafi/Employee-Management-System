@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
-import type { ReactNode } from "react";
-import QueryProvider from "@/providers/QueryProvider";
+import { Children, type ReactNode } from "react";
+import { QueryProvider } from "@/providers/QueryProvider";
+
 
 
 

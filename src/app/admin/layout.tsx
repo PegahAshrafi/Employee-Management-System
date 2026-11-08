@@ -7,9 +7,9 @@ interface AdminLayoutProps{
 }
 const AdminLayout = ({children}: AdminLayoutProps) => {
   return(
-   <div className='flex'>
+   <div className='flex min-h-screen'>
      <Sidebar/>
-     <main>{children}</main>
+     <main className='flex-1 p-6'>{children}</main>
    </div>
    );
 };

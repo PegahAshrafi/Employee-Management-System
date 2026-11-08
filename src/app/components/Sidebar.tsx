@@ -31,7 +31,7 @@ const menuItems = [
   },
   {
     name: "Employee",
-    href: "/admin/Employee",
+    href: "/admin/employees",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
