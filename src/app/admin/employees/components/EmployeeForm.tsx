@@ -1,8 +1,14 @@
 import { X } from "lucide-react";
 import React, { useState } from "react";
-
-const EmployeeForm = () => {
-  const [isEdit, setIsEdit] = useState(false);
+import PrimaryButton from "./PrimaryButton";
+interface EmployeeFormProps {
+  isopen: boolean;
+  onclose: () => void;
+  mode: "add" | "edit";
+  isEdit: boolean;
+}
+const EmployeeForm = ({ isopen, onclose, mode,isEdit }: EmployeeFormProps) => {
+  if (!isopen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
@@ -14,12 +20,12 @@ const EmployeeForm = () => {
             <h3>
               {isEdit
                 ? "Update employee details"
-                : "Create a user account and employee profile"}{" "}
+                : "Create a user account and employee profile"}
             </h3>
           </div>
           <button
             type="button"
-            // onClick={}
+            onClick={onclose}
             className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
           >
             <X size={20} />
@@ -198,7 +204,7 @@ const EmployeeForm = () => {
                 <div className="flex items-center justify-end gap-3 pt-2">
                   <button
                     type="button"
-                    // onClick={onClose}
+                    onClick={onclose}
                     className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     Cancel
