@@ -1,6 +1,6 @@
 "use client"
 import React, { use, useState } from 'react'
-import AddEmployeeButton from './components/AddEmployeeButton';
+import AddEmployeeButton from './components/PrimaryButton';
 import EmployeeForm from './components/EmployeeForm';
 
 const EmployeesPage = () => {
