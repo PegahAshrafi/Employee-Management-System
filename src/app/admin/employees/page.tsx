@@ -1,10 +1,10 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import PrimaryButton from "./components/PrimaryButton";
 import EmployeeCard from "./components/EmployeeCard";
 import EmployeeForm from "./components/EmployeeForm";
-import { ChevronDown, Search } from "lucide-react";
-import {useQuery  } from "@tanstack/react-query";
+import { ChevronDown, Key, Search } from "lucide-react";
+import {useQuery } from "@tanstack/react-query";
 import { getEmployees } from "@/Services/Employee/employeeService";
 
 
@@ -19,7 +19,8 @@ const {
   queryFn: getEmployees,
 });
 console.log({ employees, isLoading, isError });
-
+if (isLoading) return <p>در حال بارگذاری کارمندان...</p>;
+if (isError) return <p>گرفتن فهرست کارمندان ناموفق بود.</p>;
   return (
     <main className="min-h-screen bg-gray-50 p-8">
       <div className="mb-6 flex items-center justify-between">
@@ -67,9 +68,21 @@ console.log({ employees, isLoading, isError });
           <option value="">Design</option>
         </select>
         {/* employee cards */}
-        {/* <div>
-          <{EmployeeCard}/>
-        </div> */}
+      </div>
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {employees?.map((employee) => (
+          <EmployeeCard
+            key={employee.id}
+            employee={{
+              id: employee._id,
+              name: `${employee.firstName} ${employee.lastName}`,
+              department: employee.department,
+              position: employee.position,
+            }}
+            onEdit={(employee) => console.log("ویرایش:", employee)}
+            onDelete={(employee) => console.log("حذف:", employee)}
+          />
+        ))}
       </div>
     </main>
   );

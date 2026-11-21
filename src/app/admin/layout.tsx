@@ -3,9 +3,9 @@ import React from 'react'
 import Sidebar from '../components/Sidebar';
 
 interface AdminLayoutProps{
-  chidren: React.ReactNode;
+  children: React.ReactNode;
 }
-const AdminLayout = ({children}: AdminLayoutProps) => {
+const AdminLayout = ({children}:AdminLayoutProps) => {
   return(
    <div className='flex min-h-screen'>
      <Sidebar/>

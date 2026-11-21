@@ -130,22 +130,27 @@ export default function LoginForm({ title, redirectTo }: LoginFormProps) {
   } = useForm<LoginFormData>();
 
   // ۲. تعریف Mutation برای لاگین با TanStack Query
-  const loginMutation = useMutation({
-    mutationFn: async (credentials: LoginFormData) => {
-      const response = await api.post<LoginResponse>(
-        "/auth/login",
-        credentials,
-      );
-      return response.data;
-    },
-    onSuccess: (data) => {
-      console.log("ورود با موفقیت انجام شد:", data);
-      router.push(redirectTo);
-    },
-    onError: (error: any) => {
-      console.error("خطای ورود:", error);
-    },
-  });
+    const loginMutation = useMutation({
+      mutationFn: async (credentials: LoginFormData) => {
+        const response = await api.post<LoginResponse>(
+          "/auth/login",
+          credentials,
+        );
+        return response.data;
+      },
+      onSuccess: (data) => {
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          if (data.user) {
+            localStorage.setItem("user", JSON.stringify(data.user));
+          }
+        }
+        router.push(redirectTo);
+      },
+      onError: (error: any) => {
+        console.error("خطای ورود:", error);
+      },
+    });
 
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     loginMutation.mutate(data);
