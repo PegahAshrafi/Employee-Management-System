@@ -1,14 +1,17 @@
 import { X } from "lucide-react";
 import React, { useState } from "react";
 import PrimaryButton from "./PrimaryButton";
+import { employeeEditFormData, getEmployees } from "@/Services/Employee/employeeService";
+
 interface EmployeeFormProps {
+  employee?: employeeEditFormData | null;
   isopen: boolean;
   onclose: () => void;
   isEdit: boolean;
-}
-const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
+  onSubmit: (data: employeeEditFormData) => void;
+};
+const EmployeeForm = ({ isopen, onclose, isEdit,employee }: EmployeeFormProps) => {
   if (!isopen) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
       <div className="relative w-full max-w-3xl rounded-2xl bg-white p-6 shadow-xl my-8">
@@ -43,6 +46,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
                 </label>
                 <input
                   type="text"
+                  defaultValue={employee?.firstName ?? ""}
                   placeholder="First Name"
                   className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
@@ -53,6 +57,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
                 </label>
                 <input
                   type="text"
+                  defaultValue={employee?.lastName ?? ""}
                   placeholder="Last Name"
                   className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
@@ -63,6 +68,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
                 </label>
                 <input
                   type="text"
+                  defaultValue={employee?.phone ?? ""}
                   placeholder="Phone Number"
                   className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
@@ -73,6 +79,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
                 </label>
                 <input
                   type="text"
+                  defaultValue={employee?.joinDate ?? ""}
                   placeholder="mm/dd/yyyy"
                   className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
@@ -117,6 +124,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
               </label>
               <input
                 type="text"
+                defaultValue={employee?.position ?? ""}
                 className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 mt-1"
               />
             </div>
@@ -127,7 +135,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
               <div className="relative ">
                 <input
                   type="number"
-                  defaultValue={0}
+                  defaultValue={employee?.basicSalary ?? ""}
                   step={500}
                   className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 ml-2"
                 />
@@ -141,7 +149,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
                 </label>
                 <input
                   type="number"
-                  defaultValue={0}
+                  defaultValue={employee?.allowances ?? ""}
                   className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
               </div>
@@ -151,7 +159,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
                 </label>
                 <input
                   type="number"
-                  defaultValue={0}
+                  defaultValue={employee?.deductions ?? ""}
                   className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
               </div>
@@ -168,6 +176,7 @@ const EmployeeForm = ({ isopen, onclose, isEdit }: EmployeeFormProps) => {
                     </label>
                     <input
                       type="email"
+                      defaultValue={employee?.email ?? ""}
                       placeholder="Work Email"
                       className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />

@@ -2,14 +2,44 @@
 import React, { useState } from "react";
 import PrimaryButton from "./components/PrimaryButton";
 import EmployeeCard from "./components/EmployeeCard";
-import EmployeeForm from "./components/EmployeeForm";
 import { ChevronDown, Key, Search } from "lucide-react";
 import {useQuery } from "@tanstack/react-query";
-import { getEmployees } from "@/Services/Employee/employeeService";
+import { employeeEditFormData, getEmployees, TEmployee } from "@/Services/Employee/employeeService";
+import { join } from "path";
+import EmployeeForm from "./components/EmployeeForm";
 
+interface EmployeeFormProps {
+  isEdit: boolean;
+  employee?: TEmployee;
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: TEmployee) => void;};
+  
+  const EmployeesPage = () => {
+const handleEdit = (employee: employeeEditFormData) => {
+  setIsFormOpen(true);
+};
+const handleAddEmployee = (employee:employeeEditFormData) => {
+  setSelectedEmployee(undefined);
+  setIsEdit(false);
+  setIsFormOpen(true);
+};
+const handleEditEmployee = (employee: employeeEditFormData) => {
+  setSelectedEmployee(employee);
+  setIsEdit(true);
+  setIsFormOpen(true);
+};
 
-const EmployeesPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+ const handleDelete = (employee: employeeEditFormData) => { setIsFormOpen(true);
+    const isConfirmed = window.confirm(
+      `Are you sure ?${employee} `
+    );
+    // if (!confirmed) return;
+    // منطق حذف کارمند
+  };
+    const [isFormOpen, setIsFormOpen] = useState(false);
+const [isEdit, setIsEdit] = useState(false);
+const [selectedEmployee, setSelectedEmployee] = useState<employeeEditFormData |undefined>(undefined,);
 const {
   data: employees,
   isLoading,
@@ -21,6 +51,7 @@ const {
 console.log({ employees, isLoading, isError });
 if (isLoading) return <p>در حال بارگذاری کارمندان...</p>;
 if (isError) return <p>گرفتن فهرست کارمندان ناموفق بود.</p>;
+
   return (
     <main className="min-h-screen bg-gray-50 p-8">
       <div className="mb-6 flex items-center justify-between">
@@ -31,12 +62,18 @@ if (isError) return <p>گرفتن فهرست کارمندان ناموفق بو�
         <>
           <PrimaryButton
             text={"Add Employee"}
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setSelectedEmployee(undefined);
+              setIsFormOpen(true);
+            }}
           ></PrimaryButton>
           <EmployeeForm
-            isopen={isModalOpen}
-            onclose={() => setIsModalOpen(false)}
-            isEdit={false}
+            key={selectedEmployee ? selectedEmployee._id : "add-new"}
+            isEdit={isEdit}
+            employee={selectedEmployee}
+            isopen={isFormOpen}
+            onclose={() => setIsFormOpen(false)}
+            onSubmit={handleEdit}
           />
         </>
       </div>
@@ -52,7 +89,6 @@ if (isError) return <p>گرفتن فهرست کارمندان ناموفق بو�
             className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-indigo-500"
           />
         </div>
-
         {/* Departments Filter Button */}
         <select className="flex items-center justify-between gap-3 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50 focus:outline-none">
           <ChevronDown size={16} />
@@ -70,22 +106,32 @@ if (isError) return <p>گرفتن فهرست کارمندان ناموفق بو�
         {/* employee cards */}
       </div>
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {employees?.map((employee) => (
+        {employees!.map((employee) => (
           <EmployeeCard
-            key={employee.id}
+            key={employee._id}
             employee={{
               id: employee._id,
               name: `${employee.firstName} ${employee.lastName}`,
               department: employee.department,
               position: employee.position,
             }}
-            onEdit={(employee) => console.log("ویرایش:", employee)}
-            onDelete={(employee) => console.log("حذف:", employee)}
+            onEdit={() => handleEditEmployee(employee)}
+            onDelete={() => handleDelete(employee)}
           />
         ))}
+        <div>
+          <EmployeeForm
+            isopen={isFormOpen}
+            onclose={() => {
+              setIsFormOpen(false);
+            }}
+            onSubmit={handleEdit}
+            isEdit={selectedEmployee !== null}
+            employee={selectedEmployee}
+          />
+        </div>
       </div>
     </main>
   );
 };
-
 export default EmployeesPage;
