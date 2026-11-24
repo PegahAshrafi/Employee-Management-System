@@ -42,8 +42,8 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} h-full antialiased`}
     >
-      <body className={outfit.className}>
-        <QueryProvider>{children}</QueryProvider>
+        <body className={outfit.className}>
+          <QueryProvider>{children}</QueryProvider>
         </body>
     </html>
   );

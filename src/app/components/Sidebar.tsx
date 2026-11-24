@@ -1,9 +1,9 @@
 "use client";
-import { Component, Icon } from "lucide-react";
-import icon from "lucide-react/icons/";
+import { keepPreviousData } from "@tanstack/react-query";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { ComponentType } from "react";
+import { useState } from "react";
 const menuItems = [
   {
     name: "Dashboard",
@@ -124,72 +124,92 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
+  const [isOpen,setIsOpen] = useState(true);
   const pathname = usePathname();
   return (
-    <aside className="bg-[#020618] flex flex-col w-64 text-slate-300 min-h-screen border-r border-slate-800">
-      <div className="p-4 ">
-        <div className="flex gap-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={24}
-            height={24}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-user text-white size-7"
-            aria-hidden="true"
-          >
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          <div>
-            <p>Employee MS</p>
-            <p>Management System</p>
-          </div>
-        </div>
-      </div>
-      <div className="border-b border-slate-800"></div>
-      {/* ....... */}
-      <div className="bg-white/5 border w-60 h-18 m-2 border-slate-800 rounded-2xl ">
-        <div className="flex gap-3 pt-3 ">
-          <div className="border w-10 h-10 ml-2 text-2xl border-slate-800 rounded-2xl font-bold flex justify-center items-center text-slate-700 ">
-            A
-          </div>
-          <div>
-            <p>Admin</p>
-            <p>Administrator</p>
-          </div>
-        </div>
-      </div>
-      {/* .... */}
-      <div className="px-2 font-semibold text-slate-500 text-[10px]">
-        Navigation
-      </div>
-      <nav className="space-y-1 px-2">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.href;
-          const IconComponent = item.icon;
-
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
-                  : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
-              }`}
+    <>
+      <button
+        onClick={() => setIsOpen((previous) => !previous)}
+        aria-label={isOpen ? "بستن منو" : "باز کردن منو"}
+        aria-expanded={isOpen}
+        className="fixed left-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-lg border border-slate-700 bg-[#020618] text-white shadow-lg lg:hidden"
+      >
+        {isOpen ? <X size={22} /> : <Menu size={22} />}
+      </button>
+      {isOpen && (
+        <button
+          type="button"
+          aria-label="بستن منو"
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+        />
+      )}
+      <aside  className={`fixed inset-y-0 left-0 z-40 flex min-h-screen w-64 flex-col border-r border-slate-800 bg-[#020618] text-slate-300 transition-transform duration-300 lg:static lg:z-auto lg:translate-x-0 ${ isOpen ? "translate-x-0" : "-translate-x-full"
+      }`}>
+        <div className="p-4 ">
+          <div className="flex gap-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-user text-white size-7"
+              aria-hidden="true"
             >
-              {item.icon}
-              <span>{item.name}</span>
-            </Link>
-          );
-        })}
-      </nav>
-    </aside>
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <div>
+              <p>Employee MS</p>
+              <p>Management System</p>
+            </div>
+          </div>
+        </div>
+        <div className="border-b border-slate-800"></div>
+        {/* ....... */}
+        <div className="bg-white/5 border w-60 h-18 m-2 border-slate-800 rounded-2xl ">
+          <div className="flex gap-3 pt-3 ">
+            <div className="border w-10 h-10 ml-2 text-2xl border-slate-800 rounded-2xl font-bold flex justify-center items-center text-slate-700 ">
+              A
+            </div>
+            <div>
+              <p>Admin</p>
+              <p>Administrator</p>
+            </div>
+          </div>
+        </div>
+        {/* .... */}
+        <div className="px-2 font-semibold text-slate-500 text-[10px]">
+          Navigation
+        </div>
+        <nav className="space-y-1 px-2">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            const IconComponent = item.icon;
+
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
+                    : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                }`}
+              >
+                {item.icon}
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 };
 

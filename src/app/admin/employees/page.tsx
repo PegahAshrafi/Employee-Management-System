@@ -1,11 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import PrimaryButton from "./components/PrimaryButton";
+import PrimaryButton from "../../components/PrimaryButton";
 import EmployeeCard from "./components/EmployeeCard";
 import { ChevronDown, Key, Search } from "lucide-react";
-import {useQuery } from "@tanstack/react-query";
-import { employeeEditFormData, getEmployees, TEmployee } from "@/Services/Employee/employeeService";
-import { join } from "path";
+import { useQuery } from "@tanstack/react-query";
+import {
+  employeeEditFormData,
+  getEmployees,
+  TEmployee,
+} from "@/Services/Employee/employeeService";
 import EmployeeForm from "./components/EmployeeForm";
 
 interface EmployeeFormProps {
@@ -13,44 +16,46 @@ interface EmployeeFormProps {
   employee?: TEmployee;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: TEmployee) => void;};
-  
-  const EmployeesPage = () => {
-const handleEdit = (employee: employeeEditFormData) => {
-  setIsFormOpen(true);
-};
-const handleAddEmployee = (employee:employeeEditFormData) => {
-  setSelectedEmployee(undefined);
-  setIsEdit(false);
-  setIsFormOpen(true);
-};
-const handleEditEmployee = (employee: employeeEditFormData) => {
-  setSelectedEmployee(employee);
-  setIsEdit(true);
-  setIsFormOpen(true);
-};
+  onSubmit: (data: TEmployee) => void;
+}
 
- const handleDelete = (employee: employeeEditFormData) => { setIsFormOpen(true);
-    const isConfirmed = window.confirm(
-      `Are you sure ?${employee} `
-    );
+const EmployeesPage = () => {
+  const handleEdit = (employee: employeeEditFormData) => {
+    setIsFormOpen(true);
+  };
+  const handleAddEmployee = (employee: employeeEditFormData) => {
+    setSelectedEmployee(undefined);
+    setIsEdit(false);
+    setIsFormOpen(true);
+  };
+  const handleEditEmployee = (employee: employeeEditFormData) => {
+    setSelectedEmployee(employee);
+    setIsEdit(true);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = (employee: employeeEditFormData) => {
+    setIsFormOpen(true);
+    const isConfirmed = window.confirm(`Are you sure ?${employee} `);
     // if (!confirmed) return;
     // منطق حذف کارمند
   };
-    const [isFormOpen, setIsFormOpen] = useState(false);
-const [isEdit, setIsEdit] = useState(false);
-const [selectedEmployee, setSelectedEmployee] = useState<employeeEditFormData |undefined>(undefined,);
-const {
-  data: employees,
-  isLoading,
-  isError,
-} = useQuery({
-  queryKey: ["employees"],
-  queryFn: getEmployees,
-});
-console.log({ employees, isLoading, isError });
-if (isLoading) return <p>در حال بارگذاری کارمندان...</p>;
-if (isError) return <p>گرفتن فهرست کارمندان ناموفق بود.</p>;
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<
+    employeeEditFormData | undefined
+  >(undefined);
+  const {
+    data: employees,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["employees"],
+    queryFn: getEmployees,
+  });
+  console.log({ employees, isLoading, isError });
+  if (isLoading) return <p>در حال بارگذاری کارمندان...</p>;
+  if (isError) return <p>گرفتن فهرست کارمندان ناموفق بود.</p>;
 
   return (
     <main className="min-h-screen bg-gray-50 p-8">

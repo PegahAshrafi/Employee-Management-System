@@ -1,7 +1,10 @@
 import { X } from "lucide-react";
 import React, { useState } from "react";
-import PrimaryButton from "./PrimaryButton";
-import { employeeEditFormData, getEmployees } from "@/Services/Employee/employeeService";
+import PrimaryButton from "../../../components/PrimaryButton";
+import {
+  employeeEditFormData,
+  getEmployees,
+} from "@/Services/Employee/employeeService";
 
 interface EmployeeFormProps {
   employee?: employeeEditFormData | null;
@@ -9,8 +12,13 @@ interface EmployeeFormProps {
   onclose: () => void;
   isEdit: boolean;
   onSubmit: (data: employeeEditFormData) => void;
-};
-const EmployeeForm = ({ isopen, onclose, isEdit,employee }: EmployeeFormProps) => {
+}
+const EmployeeForm = ({
+  isopen,
+  onclose,
+  isEdit,
+  employee,
+}: EmployeeFormProps) => {
   if (!isopen) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
