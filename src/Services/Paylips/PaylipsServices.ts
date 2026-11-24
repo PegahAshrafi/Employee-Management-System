@@ -1,6 +1,5 @@
 
 import { api } from "@/lib/axios";
-import { use } from "react";
 export interface Payslip {
   id: string;
   employeeId: string;
