@@ -3,6 +3,8 @@ import { getPayslips, Payslip } from "@/Services/Paylips/PaylipsServices";
 import { useQuery } from "@tanstack/react-query";
 import PrimaryButton from "./PrimaryButton";
 import { Download, Plus } from "lucide-react";
+import { useState } from "react";
+import PaylipsForm from "../admin/Payslips/components/PaylipsForm";
 
 const formatPeriod = (month: number, year: number) => {
   return new Intl.DateTimeFormat("en-US", {
@@ -16,6 +18,10 @@ const formatSalary = (amount: number) => {
   return amount.toLocaleString("en-US");
 };
 const Payslips = () => {
+  const [isButtonOpen, setIsButtonOpen] = useState(false);
+  const handleCloseForm = () => {
+    setIsButtonOpen(false);
+  };
   const {
     data: Paylips = [],
     isPending,
@@ -50,12 +56,18 @@ const Payslips = () => {
             Manage and view employee payslips
           </p>
         </div>
-        <PrimaryButton
-          text="Generate Paylips"
-          icon={Plus}
-          aria-hidden="true"
-          className="inline-flex items-center gap-2 whitespace-nowrap"
-        />
+        <div>
+          <PrimaryButton
+            text="Generate Payslips"
+            icon={Plus}
+            aria-hidden="true"
+            className="inline-flex items-center gap-2 whitespace-nowrap"
+            type="button"
+            onClick={() => setIsButtonOpen(true)}
+          />
+          {isButtonOpen && <PaylipsForm 
+         onClose={handleCloseForm}/>}
+        </div>
       </div>
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
@@ -86,7 +98,6 @@ const Payslips = () => {
                 </th>
               </tr>
             </thead>
-
             {/* سطرهای داینامیک جدول */}
             <tbody className="divide-y divide-slate-100">
               {Paylips.length === 0 ? (
@@ -109,32 +120,26 @@ const Payslips = () => {
                         ? `${item.employee.firstName} ${item.employee.lastName}`
                         : `Employee #${item.employeeId}`}
                     </td>
-
                     {/* دوره ماه و سال با استفاده از تابع کمکی */}
                     <td className="px-6 py-4 whitespace-nowrap">
                       {formatPeriod(item.month, item.year)}
                     </td>
-
                     {/* حقوق پایه */}
                     <td className="px-6 py-4 whitespace-nowrap">
                       ${formatSalary(item.basicSalary)}
                     </td>
-
                     {/* مزایا */}
                     <td className="px-6 py-4 whitespace-nowrap text-emerald-600">
                       +${formatSalary(item.allowances)}
                     </td>
-
                     {/* کسورات */}
                     <td className="px-6 py-4 whitespace-nowrap text-rose-600">
                       -${formatSalary(item.deductions)}
                     </td>
-
                     {/* خالص پرداختی */}
                     <td className="px-6 py-4 whitespace-nowrap font-semibold text-slate-900">
                       ${formatSalary(item.netSalary)}
                     </td>
-
                     {/* دکمه دانلود فیش */}
                     <td className="px-6 py-4 text-center whitespace-nowrap">
                       <button
