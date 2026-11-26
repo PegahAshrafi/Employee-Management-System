@@ -1,10 +1,11 @@
 "use client";
-import { getPayslips, Payslip } from "@/Services/Paylips/PaylipsServices";
+import { getPayslips } from "@/Services/Paylips/PaylipsServices";
 import { useQuery } from "@tanstack/react-query";
 import PrimaryButton from "./PrimaryButton";
 import { Download, Plus } from "lucide-react";
 import { useState } from "react";
 import PaylipsForm from "../admin/Payslips/components/PaylipsForm";
+import Link from "next/link";
 
 const formatPeriod = (month: number, year: number) => {
   return new Intl.DateTimeFormat("en-US", {
@@ -65,8 +66,7 @@ const Payslips = () => {
             type="button"
             onClick={() => setIsButtonOpen(true)}
           />
-          {isButtonOpen && <PaylipsForm 
-         onClose={handleCloseForm}/>}
+          {isButtonOpen && <PaylipsForm onClose={handleCloseForm} />}
         </div>
       </div>
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -142,12 +142,14 @@ const Payslips = () => {
                     </td>
                     {/* دکمه دانلود فیش */}
                     <td className="px-6 py-4 text-center whitespace-nowrap">
-                      <button
-                        title="Download Payslip"
+                      <Link
+                        href={`/admin/Payslips/${item.id}`}
+                        target="_blanck"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center justify-center rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
                       >
                         <Download className="h-4 w-4" />
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 ))

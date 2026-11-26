@@ -9,9 +9,14 @@ export interface Payslip {
   allowances: number;
   deductions: number;
   netSalary: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  position: string;
   employee: {
     firstName: string;
     lastName: string;
+    email: string;
   };
 }
 
