@@ -1,6 +1,4 @@
 import { X } from "lucide-react";
-import React, { useState } from "react";
-import PrimaryButton from "../../../components/PrimaryButton";
 import {
   employeeEditFormData,
   getEmployees,

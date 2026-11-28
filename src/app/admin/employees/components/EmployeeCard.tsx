@@ -1,7 +1,4 @@
-import { getEmployees } from "@/Services/Employee/employeeService";
-import { on } from "events";
-import { Key } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 type EmployeeCardData = {
   id: string;
   name: string;

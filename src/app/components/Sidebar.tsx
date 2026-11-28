@@ -101,7 +101,7 @@ const menuItems = [
   },
   {
     name: "Settings",
-    href: "/admin/Settings",
+    href: "/admin/setting",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -1,13 +1,13 @@
-import React from 'react'
-import PaylipsReport from '../components/PaylipsReport'
+"use client";
+import { Suspense } from "react";
+import PaylipsReport from "../components/PaylipsReport";
 
-type PageProps = {
-  params: Promise<{ id: string }>;
+const page = () => {
+  return (
+    <Suspense fallback={<div>Loading</div>}>
+      <PaylipsReport />
+    </Suspense>
+  );
 };
 
-const Page = async ({ params }: PageProps) => {
-  const { id } = await params;
-
-  return <PaylipsReport id={id} />;
-};
-export default Page;
+export default page;
